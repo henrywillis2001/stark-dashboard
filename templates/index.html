@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketPulse - Market Intelligence Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stark-container">
+        <!-- Header -->
+        <header class="stark-header">
+            <div class="header-content">
+                <h1 class="stark-title">
+                    <span class="glow">MARKET</span>PULSE
+                </h1>
+                <div class="status-indicator">
+                    <span class="status-dot active"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
+                <div class="time-display" id="timeDisplay"></div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Navigation Tabs -->
+            <nav class="stark-tabs">
+                <button class="tab-btn active" data-tab="home">
+                    <span class="tab-icon">⌂</span>
+                    <span>DASHBOARD</span>
+                </button>
+                <button class="tab-btn" data-tab="analysis">
+                    <span class="tab-icon">📊</span>
+                    <span>ANALYSIS</span>
+                </button>
+                <button class="tab-btn" data-tab="news">
+                    <span class="tab-icon">📰</span>
+                    <span>NEWS</span>
+                </button>
+                <button class="tab-btn" data-tab="tasks">
+                    <span class="tab-icon">✓</span>
+                    <span>TASKS</span>
+                </button>
+                <button class="tab-btn" data-tab="brief">
+                    <span class="tab-icon">⚡</span>
+                    <span>BRIEF</span>
+                </button>
+                <button class="tab-btn" data-tab="chat">
+                    <span class="tab-icon">💬</span>
+                    <span>CHAT</span>
+                </button>
+            </nav>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="home-tab">
+                <!-- What Changed Banner -->
+                <div class="what-changed-banner" id="whatChangedBanner">
+                    <div class="loading">Analyzing changes...</div>
+                </div>
+
+                <div class="grid-layout-home">
+                    <!-- Market Regime Panel -->
+                    <div class="stark-panel regime-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">REGIME</h2>
+                            <button class="refresh-btn small" id="refreshRegimeBtn">⟳</button>
+                        </div>
+                        <div class="panel-body" id="regimeContent">
+                            <div class="loading">Analyzing regime...</div>
+                        </div>
+                    </div>
+
+                    <!-- Winners Panel -->
+                    <div class="stark-panel winners-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">WINNERS</h2>
+                        </div>
+                        <div class="panel-body" id="winnersContent">
+                            <div class="loading">Identifying winners...</div>
+                        </div>
+                    </div>
+
+                    <!-- Losers Panel -->
+                    <div class="stark-panel losers-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">LOSERS</h2>
+                        </div>
+                        <div class="panel-body" id="losersContent">
+                            <div class="loading">Identifying losers...</div>
+                        </div>
+                    </div>
+
+                    <!-- Opportunity Zones Panel -->
+                    <div class="stark-panel opportunity-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">OPPORTUNITY ZONES</h2>
+                        </div>
+                        <div class="panel-body scrollable" id="opportunityContent">
+                            <div class="loading">Identifying opportunities...</div>
+                        </div>
+                    </div>
+
+                    <!-- Time Horizons Panel -->
+                    <div class="stark-panel horizons-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">TIME HORIZONS</h2>
+                        </div>
+                        <div class="panel-body scrollable" id="horizonsContent">
+                            <div class="loading">Analyzing horizons...</div>
+                        </div>
+                    </div>
+
+                    <!-- What Breaks Panel -->
+                    <div class="stark-panel breaks-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">WHAT BREAKS</h2>
+                        </div>
+                        <div class="panel-body" id="breaksContent">
+                            <div class="loading">Identifying break conditions...</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Sentiment Panel -->
+                    <div class="stark-panel sentiment-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">MARKET SENTIMENT</h2>
+                        </div>
+                        <div class="panel-body" id="sentimentContent">
+                            <div class="loading">Analyzing sentiment...</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Pulse Panel -->
+                    <div class="stark-panel pulse-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">MARKET PULSE</h2>
+                            <button class="refresh-btn small" id="refreshPulseBtn">⟳</button>
+                        </div>
+                        <div class="panel-body" id="pulseContent">
+                            <div class="loading">Loading market data...</div>
+                        </div>
+                    </div>
+
+                    <!-- Intel Signals Panel -->
+                    <div class="stark-panel signals-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">INTEL SIGNALS</h2>
+                            <button class="refresh-btn small" id="refreshSignalsBtn">⟳</button>
+                        </div>
+                        <div class="panel-body scrollable" id="signalsContent">
+                            <div class="loading">Processing signals...</div>
+                        </div>
+                    </div>
+
+                    <!-- Tasks Panel -->
+                    <div class="stark-panel tasks-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">TASKS</h2>
+                        </div>
+                        <div class="panel-body scrollable" id="dashboardTasksContent">
+                            <div class="loading">Loading tasks...</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Synthesis Panel -->
+                    <div class="stark-panel synthesis-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">MARKET SYNTHESIS</h2>
+                            <button class="refresh-btn small" id="refreshSynthesisBtn">⟳</button>
+                        </div>
+                        <div class="panel-body scrollable" id="synthesisContent">
+                            <div class="loading">Synthesizing market intelligence...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Tab -->
+            <div class="tab-content" id="tasks-tab">
+                <div class="stark-panel full-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">TASK MANAGEMENT</h2>
+                        <div class="panel-glow"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-input-container">
+                            <input type="text" id="taskInput" class="stark-input" placeholder="Enter new task and press Enter...">
+                            <button class="stark-btn" id="addTaskBtn">ADD</button>
+                        </div>
+                        <div class="tasks-list" id="tasksList">
+                            <div class="loading">Loading tasks...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Tab -->
+            <div class="tab-content" id="analysis-tab">
+                <div class="grid-layout-analysis">
+                    <div class="stark-panel analysis-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">MARKET ANALYSIS</h2>
+                            <button class="refresh-btn small" id="refreshAnalysisBtn">⟳</button>
+                        </div>
+                        <div class="panel-body scrollable" id="analysisContent">
+                            <div class="loading">Generating market analysis...</div>
+                        </div>
+                    </div>
+                    <div class="stark-panel sentiment-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">SENTIMENT</h2>
+                        </div>
+                        <div class="panel-body" id="sentimentContent">
+                            <div class="loading">Loading sentiment...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Tab -->
+            <div class="tab-content" id="news-tab">
+                <div class="grid-layout-news">
+                    <div class="stark-panel news-synthesis-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">NEWS SYNTHESIS</h2>
+                            <button class="refresh-btn small" id="refreshSynthesisBtn">⟳</button>
+                        </div>
+                        <div class="panel-body scrollable" id="synthesisContent">
+                            <div class="loading">Synthesizing news...</div>
+                        </div>
+                    </div>
+                    <div class="stark-panel full-news-panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">ALL HEADLINES</h2>
+                            <button class="refresh-btn small" id="refreshNewsBtn">⟳</button>
+                        </div>
+                        <div class="panel-body scrollable" id="fullNewsContent">
+                            <div class="loading">Loading news...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brief Tab -->
+            <div class="tab-content" id="brief-tab">
+                <div class="stark-panel full-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">AI BRIEF GENERATOR</h2>
+                        <div class="panel-glow"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="brief-controls">
+                            <button type="button" class="stark-btn primary" id="buildPackBtn" onclick="window.buildRetrievalPack()">BUILD RETRIEVAL PACK</button>
+                            <button type="button" class="stark-btn primary" id="generateBriefBtn" onclick="window.generateBrief()">GENERATE BRIEF</button>
+                        </div>
+                        <div class="brief-content scrollable" id="briefContent">
+                            <div class="brief-placeholder">
+                                <p>Click "BUILD RETRIEVAL PACK" to see the data that will be analyzed.</p>
+                                <p>Then click "GENERATE BRIEF" to create an AI-powered market brief.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Tab -->
+            <div class="tab-content" id="chat-tab">
+                <div class="stark-panel full-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">STARK CHAT</h2>
+                    </div>
+                    <div class="panel-body chat-container">
+                        <div class="chat-messages scrollable" id="chatMessages">
+                            <div class="chat-message system">
+                                <div class="chat-text">Ask questions about the market analysis, challenge assumptions, or request clarification.</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" id="chatInput" class="stark-input chat-input" placeholder="Ask a question..." />
+                            <button class="stark-btn" id="sendChatBtn">SEND</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Chat Widget -->
+        <div class="floating-chat-widget" id="floatingChatWidget">
+            <div class="chat-widget-header" id="chatWidgetToggle" onclick="window.toggleChatWidget()">
+                <span>💬 STARK CHAT</span>
+                <span class="chat-toggle-icon">−</span>
+            </div>
+            <div class="chat-widget-body" id="chatWidgetBody">
+                <div class="chat-widget-messages scrollable" id="floatingChatMessages">
+                    <div class="chat-message system">
+                        <div class="chat-text">Ask about market trends, what to watch, or what could happen next.</div>
+                    </div>
+                </div>
+                <div class="chat-widget-input-container">
+                    <input type="text" id="floatingChatInput" class="stark-input chat-input" placeholder="Ask a question..." onkeypress="if(event.key==='Enter') window.sendFloatingChat()" />
+                    <button type="button" class="stark-btn small" id="floatingSendChatBtn" onclick="window.sendFloatingChat()">SEND</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="stark-footer">
+            <div class="footer-content">
+                <span>MarketPulse v1.0</span>
+                <span class="separator">|</span>
+                <span id="lastUpdate">Last update: --</span>
+                <span class="separator">|</span>
+                <button class="refresh-btn small" id="refreshAllBtn">REFRESH ALL</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
