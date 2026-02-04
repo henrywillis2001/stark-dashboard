@@ -351,8 +351,7 @@ Verdict: {decision_data.get('verdict', 'N/A')}
     
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        api_key = "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"
-        os.environ["OPENAI_API_KEY"] = api_key
+        return {"error": "OpenAI API key not configured"}
     
     if not OPENAI_AVAILABLE:
         conn.close()
@@ -463,8 +462,7 @@ Verdict: {decision_data.get('verdict', 'N/A')}
     
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        api_key = "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"
-        os.environ["OPENAI_API_KEY"] = api_key
+        return {"error": "OpenAI API key not configured"}
     
     if not OPENAI_AVAILABLE:
         conn.close()
@@ -670,11 +668,8 @@ def api_stark_decision():
     print(f"📝 Context built ({len(context)} chars)")
     
     api_key = os.getenv("OPENAI_API_KEY")
-    # Fallback to hardcoded key if not in environment
     if not api_key:
-        api_key = "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"
-        os.environ["OPENAI_API_KEY"] = api_key
-        print("✅ Using fallback OpenAI API key")
+        return jsonify({"error": "OpenAI API key not configured. Set OPENAI_API_KEY environment variable."})
     
     if not OPENAI_AVAILABLE:
         return jsonify({
@@ -945,13 +940,10 @@ if __name__ == '__main__':
     
     # Set OpenAI API key if not already set
     api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        # Try to set from launch script or use default
-        api_key = "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"
-        os.environ["OPENAI_API_KEY"] = api_key
-        print("✅ OpenAI API key set from app.py")
-    else:
+    if api_key:
         print("✅ OpenAI API key loaded from environment")
+    else:
+        print("⚠️ No OpenAI API key found - set OPENAI_API_KEY environment variable")
     
     import webbrowser
     import threading
