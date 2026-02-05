@@ -835,35 +835,11 @@ async function loadStarkDecision() {
         }
         
         console.log('🎨 Rendering components...');
-        renderWhatChanged(data.whatChanged);
-        renderRegime(data.regime);
-        renderWinners(data.winners);
-        renderLosers(data.losers);
-        renderOpportunityZones(data.opportunityZones);
-        renderTimeHorizons(data.timeHorizons);
-        renderWhatBreaks(data.whatBreaks);
         
-        // Render signals if available
-        if (data.signals && Array.isArray(data.signals) && data.signals.length > 0) {
-            renderSignals(data.signals);
-        } else {
-            // If no signals, show empty state
-            const signalsContainer = document.getElementById('signalsContent');
-            if (signalsContainer) {
-                signalsContainer.innerHTML = '<div class="loading">No signals available</div>';
-            }
-        }
+        // Cache the data for fallback
+        sessionStorage.setItem('stark_decision_cache', JSON.stringify(data));
         
-        // Render market sentiment
-        if (data.marketSentiment) {
-            renderMarketSentiment(data.marketSentiment);
-        } else {
-            // If no sentiment, show empty state
-            const sentimentContainer = document.getElementById('sentimentContent');
-            if (sentimentContainer) {
-                sentimentContainer.innerHTML = '<div class="loading">No sentiment data</div>';
-            }
-        }
+        renderStarkData(data);
         
         // Also load tasks for dashboard
         loadDashboardTasks();
@@ -872,12 +848,59 @@ async function loadStarkDecision() {
     } catch (error) {
         console.error('❌ Error loading Stark decision:', error);
         console.error('Stack:', error.stack);
-        renderStarkError(`Error: ${error.message}. Check console for details.`);
+        
+        // Don't show error if we have cached data - just retry in background
+        const cached = sessionStorage.getItem('stark_decision_cache');
+        if (cached) {
+            try {
+                const cachedData = JSON.parse(cached);
+                console.log('📦 Using cached data while retrying...');
+                renderStarkData(cachedData);
+                setTimeout(loadStarkDecision, 10000); // Retry after 10 seconds
+                return;
+            } catch (e) {
+                // Cache parse failed, continue to error
+            }
+        }
+        
+        // Show error and retry
+        renderStarkError(`Error: ${error.message}. Retrying...`);
         setTimeout(loadStarkDecision, 5000); // Retry after 5 seconds
     }
 }
 
 // Removed renderVerdict - using regime instead
+
+function renderStarkData(data) {
+    // Centralized rendering function
+    renderWhatChanged(data.whatChanged);
+    renderRegime(data.regime);
+    renderWinners(data.winners);
+    renderLosers(data.losers);
+    renderOpportunityZones(data.opportunityZones);
+    renderTimeHorizons(data.timeHorizons);
+    renderWhatBreaks(data.whatBreaks);
+    
+    // Render signals if available
+    if (data.signals && Array.isArray(data.signals) && data.signals.length > 0) {
+        renderSignals(data.signals);
+    } else {
+        const signalsContainer = document.getElementById('signalsContent');
+        if (signalsContainer) {
+            signalsContainer.innerHTML = '<div class="loading">No signals available</div>';
+        }
+    }
+    
+    // Render market sentiment
+    if (data.marketSentiment) {
+        renderMarketSentiment(data.marketSentiment);
+    } else {
+        const sentimentContainer = document.getElementById('sentimentContent');
+        if (sentimentContainer) {
+            sentimentContainer.innerHTML = '<div class="loading">No sentiment data</div>';
+        }
+    }
+}
 
 function renderWhatChanged(whatChanged) {
     const container = document.getElementById('whatChangedBanner');
